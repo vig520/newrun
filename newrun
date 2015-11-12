@@ -1,0 +1,33 @@
+#!/bin/bash
+
+GARMINIP="192.168.2.25"
+GARMINSHARE="Activities"
+USER="samba"
+PASSWORD="samba123"
+HDIR="/home/tomas/running"
+LDIR="/mnt/data/Ruzne/Runs/2015"
+LASTRUN=`ls -1 $LDIR | tail -n 1`
+
+
+smbclient //$GARMINIP/$GARMINSHARE $PASSWORD -U$USER -TcN $LDIR/$LASTRUN $HDIR/newruns.tar
+
+for i in `tar -tf $HDIR/newruns.tar | sort`
+do
+	echo "Chces naimportovat soubor $i?"
+	select an in "Ano" "Ne";
+	do
+		case $an in
+			Ano ) 	tar -xf $HDIR/newruns.tar $i
+				NEWNAME=`echo $i |cut -d '/' -f 2 | cut -d '.' -f 1`
+				NEWNAME="${NEWNAME}_Running.tcx"
+				sleep 1
+				gpsbabel -i garmin_fit -f $i -o gtrnctr -F $LDIR/$NEWNAME
+				sleep 1
+				/bin/perl $HDIR/addrun.pl $LDIR/$NEWNAME
+				rm -f $i
+				break;;
+			Ne )    break;;
+		esac
+	done
+done
+rm -f $HDIR/newruns.tar
