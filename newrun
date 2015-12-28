@@ -5,7 +5,7 @@ GARMINSHARE="Activities"
 USER="samba"
 PASSWORD="samba123"
 HDIR="/home/tomas/running"
-LDIR="/mnt/data/Ruzne/Runs/2015"
+LDIR="/mnt/data/Ruzne/Runs/2016"
 LASTRUN=`ls -1 $LDIR | tail -n 1`
 
 
