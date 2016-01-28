@@ -13,5 +13,7 @@ print "Nahravam do databaze.\n";
 system '/home/tomas/running/dbupload.pl', $TMPNAME;
 print "Pridavam geodata.\n";
 system '/home/tomas/running/geocheck.pl', $TMPNAME;
+print "Prepocitavam statistiky.\n";
+system '/home/tomas/running/rebuildstats.pl';
 print "Hotovo.\n";
 }
